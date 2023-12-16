@@ -24,9 +24,7 @@ public class User {
 
     @Column(nullable = false)
     private String password;
-    
-    @Column(length = 500)
-    private String token;
+   
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")
@@ -72,14 +70,6 @@ public class User {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
-	}
-
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
 	}
 
 	public User() {}

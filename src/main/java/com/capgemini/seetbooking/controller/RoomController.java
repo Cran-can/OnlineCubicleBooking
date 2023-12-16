@@ -19,12 +19,9 @@ public class RoomController {
  @Autowired
  private RoomService roomService;
 
- @PostMapping("/createOrUpdate")
- public ResponseEntity<Room> createOrUpdateRoom(@RequestBody Room room) {
-     Room createdOrUpdatedRoom = roomService.createOrUpdateRoom(room);
-     return new ResponseEntity<>(createdOrUpdatedRoom, HttpStatus.OK);
+ @PostMapping("/create")
+ public ResponseEntity<String> createOrUpdateRoom(@RequestBody Room room) {
+     return new ResponseEntity<>(roomService.createOrUpdateRoom(room), HttpStatus.OK);
  }
-
- // Implement other room-related endpoints as needed
 }
 

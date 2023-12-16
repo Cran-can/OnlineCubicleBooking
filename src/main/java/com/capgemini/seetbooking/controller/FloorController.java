@@ -19,12 +19,10 @@ public class FloorController {
  @Autowired
  private FloorService floorService;
 
- @PostMapping("/createOrUpdate")
- public ResponseEntity<Floor> createOrUpdateFloor(@RequestBody Floor floor) {
-     Floor createdOrUpdatedFloor = floorService.createOrUpdateFloor(floor);
-     return new ResponseEntity<>(createdOrUpdatedFloor, HttpStatus.OK);
+ @PostMapping("/create")
+ public ResponseEntity<String> create(@RequestBody Floor floor) {
+     return new ResponseEntity<>(floorService.create(floor), HttpStatus.OK);
  }
 
- // Implement other floor-related endpoints as needed
 }
 

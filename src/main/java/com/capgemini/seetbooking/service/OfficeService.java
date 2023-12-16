@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.capgemini.seetbooking.dto.BookingDto;
+import com.capgemini.seetbooking.dto.OfficeDto;
+import com.capgemini.seetbooking.exception.OfficeNotFoundException;
 import com.capgemini.seetbooking.model.Booking;
 import com.capgemini.seetbooking.model.BookingStatus;
 import com.capgemini.seetbooking.model.Office;
@@ -34,31 +36,53 @@ public class OfficeService {
 	@Autowired
 	private SeatRepository seatRepository;
 
-	public Office createOrUpdateOffice(Office office) {
-		return officeRepository.save(office);
+	public String createOrUpdateOffice(OfficeDto officeDto) {
+		Office office = new Office();
+		office.setName(officeDto.getName());
+		office.setLocation(officeDto.getLocation());
+		officeRepository.save(office);
+		return "Office Created";
 	}
 
-	public List<Office> getAllOffices() {
-		return officeRepository.findAll();
+	public List<OfficeDto> getAllOffices() {
+		List<OfficeDto> officeDtoList = new ArrayList<>();
+		List<Office> offices = officeRepository.findAll();
+		for (Office office : offices) {
+			OfficeDto officeDto = new OfficeDto();
+			officeDto.setId(office.getId());
+			officeDto.setLocation(office.getLocation());
+			officeDto.setName(office.getName());
+			officeDtoList.add(officeDto);
+		}
+		return officeDtoList;
 	}
 
-	public Optional<Office> getOfficeById(Long officeId) {
-		return officeRepository.findById(officeId);
+	public OfficeDto getOfficeById(Long officeId) {
+		Optional<Office> office = officeRepository.findById(officeId);
+		if (office.isPresent()) {
+			Office offices = office.get();
+			OfficeDto officeDto = new OfficeDto();
+			officeDto.setId(offices.getId());
+			officeDto.setName(offices.getName());
+			officeDto.setLocation(offices.getLocation());
+		
+		return officeDto;
+		}
+		throw new OfficeNotFoundException("Office not available with id:"+officeId);
 	}
 
 	public List<BookingDto> getAllBookings() {
 		List<BookingDto> bookings = new ArrayList<>();
-		
+
 		BookingDto bDto = new BookingDto();
 		List<Booking> existingbookings = bookingRepository.findAll();
-		for(Booking booking : existingbookings) {
+		for (Booking booking : existingbookings) {
 			bDto.setBookingId(booking.getId());
 			bDto.setBookingStatus(booking.getStatus());
 			bDto.setStartTime(booking.getStartTime());
 			bDto.setEndTime(booking.getEndTime());
 			bookings.add(bDto);
 		}
-		
 
 		return bookings;
 	}
@@ -76,7 +100,7 @@ public class OfficeService {
 			throw new RuntimeException("User not found");
 		}
 
-		if (seat.isEmpty() ) {
+		if (seat.isEmpty()) {
 			throw new RuntimeException("Seat Not Available");
 		}
 
@@ -85,25 +109,23 @@ public class OfficeService {
 		}
 
 		List<Booking> existingbookings = bookingRepository.findAll();
-		for(Booking booked : existingbookings) {
-		if(booked.getSeat().getId().equals(seatId) && (booked.getStatus()==BookingStatus.PENDING) || (booked.getStatus()==BookingStatus.APPROVED))
-		{	
-	         return "Seat is Freezed";
+		for (Booking booked : existingbookings) {
+			if (booked.getSeat().getId().equals(seatId) && (booked.getStatus() == BookingStatus.PENDING)
+					&& (booked.getStatus() == BookingStatus.APPROVED)) {
+				return "Seat is Freezed";
+			}
 		}
-		}
-			booking.setUser(user.get());
-	        booking.setSeat(seat.get());
-	        booking.setStartTime(startTime);
-	        booking.setEndTime(endTime);
-	        booking.setStatus(status);
-	        
-	        bookingRepository.save(booking);
-	        return "Successfully booked";
-        // Save the booking to the database
-		
-		}
+		booking.setUser(user.get());
+		booking.setSeat(seat.get());
+		booking.setStartTime(startTime);
+		booking.setEndTime(endTime);
+		booking.setStatus(status);
+		// Save the booking to the database
+		bookingRepository.save(booking);
+		return "Successfully booked,but waiting for Admin Approval";
 
-	
+	}
+
 	public String approveBooking(Long bookingId) {
 		Optional<Booking> optionalBooking = bookingRepository.findById(bookingId);
 		if (optionalBooking.isPresent()) {
@@ -111,31 +133,44 @@ public class OfficeService {
 			booking.getSeat().setStatus(SeatStatus.BOOKED);
 			booking.setStatus(BookingStatus.APPROVED);
 			bookingRepository.save(booking);
-			return "Updated";
+			return "User Booking Approved";
 		} else {
 			throw new RuntimeException("Booking not found");
 		}
 	}
 	
+	public String rejectBooking(Long bookingId) {
+		Optional<Booking> optionalBooking = bookingRepository.findById(bookingId);
+		if (optionalBooking.isPresent()) {
+			Booking booking = optionalBooking.get();
+			booking.getSeat().setStatus(SeatStatus.OPEN);
+			booking.setStatus(BookingStatus.REJECTED);
+			bookingRepository.save(booking);
+			return "User Booking Rejected";
+		} else {
+			throw new RuntimeException("Booking not found");
+		}
+	}
+
 	public String updateBooking() {
 //		Optional<Booking> optionalBooking = bookingRepository.findById(bookingId);
 		List<Booking> bookings = bookingRepository.findAll();
 		List<Booking> bookingToRemove = new ArrayList<>();
-		for(Booking book : bookings) {
-			if(book.getEndTime().isBefore(LocalDateTime.now())) {
+		for (Booking book : bookings) {
+			if (book.getEndTime().isBefore(LocalDateTime.now())) {
 				Seat seat = book.getSeat();
 				seat.setStatus(SeatStatus.OPEN);
 				seatRepository.save(seat);
-				
-			    bookingToRemove.add(book);
+
+				bookingToRemove.add(book);
 			}
 		}
-		 for (Booking book : bookingToRemove) {
-		        bookings.remove(book);
-		        bookingRepository.delete(book);
-		    }
+		for (Booking book : bookingToRemove) {
+			bookings.remove(book);
+			bookingRepository.delete(book);
+		}
 		return "Updated";
 	}
 }
 
-	// Add other methods as needed
+// Add other methods as needed

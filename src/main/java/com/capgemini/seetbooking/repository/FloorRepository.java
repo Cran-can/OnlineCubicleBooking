@@ -9,5 +9,6 @@ import com.capgemini.seetbooking.model.Floor;
 
 @Repository
 public interface FloorRepository extends JpaRepository<Floor, Long> {
- // Add custom queries if needed
+
+	boolean existsByFloorNumber(String floorNumber);
 }

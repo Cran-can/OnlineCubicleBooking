@@ -22,12 +22,10 @@ public class SeatController {
  
  
 
- @PostMapping("/createOrUpdate")
- public ResponseEntity<Seat> createOrUpdateSeat(@RequestBody Seat seat) {
-     Seat createdOrUpdatedSeat = seatService.createOrUpdateSeat(seat);
-     return new ResponseEntity<>(createdOrUpdatedSeat, HttpStatus.OK);
+ @PostMapping("/create")
+ public ResponseEntity<String> createOrUpdateSeat(@RequestBody Seat seat) {
+     return new ResponseEntity<>(seatService.createOrUpdateSeat(seat), HttpStatus.OK);
  }
 
  // Implement other seat-related endpoints as needed
 }
-

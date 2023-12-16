@@ -5,69 +5,60 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.capgemini.seetbooking.dto.LoginDto;
+import com.capgemini.seetbooking.exception.LoginException;
+import com.capgemini.seetbooking.exception.UserNotFoundException;
 import com.capgemini.seetbooking.model.User;
 import com.capgemini.seetbooking.repository.UserRepository;
 
 @Service
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 
-    public User registerUser(User user) {
-        // Perform validation and save user
-        return userRepository.save(user);
-    }
+	public User registerAdmin(String email, String password) {
+		User admin = User.createAdmin(email, password);
+		return userRepository.save(admin);
+	}
 
-    public Optional<User> getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
-    
-    public Optional<User> loginUser(String email, String password) {
-        // Validate credentials and return user if valid
-        Optional<User> user = userRepository.findByEmail(email);
+	public boolean isAdmin(Long userId) {
+		Optional<User> user = userRepository.findById(userId);
+		return user.map(value -> "ADMIN".equals(value.getRole())).orElse(false);
+	}
 
-        if (user.isPresent() && user.get().getPassword().equals(password)) {
-            // Generate and set JWT token (you may use a library like jjwt)
-            String token = generateJwtToken(user.get());
-            user.get().setToken(token);
+	public User registerUser(User user) {
+		// Perform validation and save user
+		return userRepository.save(user);
+	}
 
-            // Save the user with the updated token
-            return Optional.of(userRepository.save(user.get()));
-        }
+	public Optional<User> getUserByEmail(String email) {
+		return userRepository.findByEmail(email);
+	}
 
-        return Optional.empty();
-    }
-    private String generateJwtToken(User user) {
-        // Your JWT token generation logic here
-        // You may use a library like jjwt for this purpose
-        // For simplicity, let's assume a method generateToken exists
-        return user.getEmail();
-    }
-    
-    public User updateProfile(Long userId, User updatedUser) {
-        Optional<User> existingUser = userRepository.findById(userId);
+	public void loginUser(LoginDto userLoginDto) {
 
-        if (existingUser.isPresent()) {
-            User userToUpdate = existingUser.get();
-            
-            // Update profile details
-            userToUpdate.setPassword(updatedUser.getPassword());
-            userToUpdate.setFirstName(updatedUser.getFirstName());
-            userToUpdate.setLastName(updatedUser.getLastName());
-            // Update other profile details as needed
+		@SuppressWarnings("unused")
+		User user = userRepository.findByEmailAndPassword(userLoginDto.getEmail(), userLoginDto.getPassword())
+				.orElseThrow(() -> new LoginException("Invalid credentials"));
+	}
 
-            // Save and return the updated user
-            return userRepository.save(userToUpdate);
-        }
+	public String updateProfile(Long userId, User updatedUser) {
+		Optional<User> existingUser = userRepository.findById(userId);
 
-        throw new RuntimeException("User not found with ID: " + userId);
-    }
-    public User registerAdmin(String email, String password) {
-        User admin = User.createAdmin(email, password);
-        return userRepository.save(admin);
-    }
-    public boolean isAdmin(Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-        return user.map(value -> "ADMIN".equals(value.getRole())).orElse(false);
-    }
+		if (existingUser.isPresent()) {
+			User userToUpdate = existingUser.get();
+
+			// Update profile details
+			userToUpdate.setPassword(updatedUser.getPassword());
+			userToUpdate.setFirstName(updatedUser.getFirstName());
+			userToUpdate.setLastName(updatedUser.getLastName());
+
+			// Save and return the updated user
+			userRepository.save(userToUpdate);
+			return "User Details Updated";
+		}
+
+		throw new UserNotFoundException("User not found with ID: " + userId);
+	}
+
 }
