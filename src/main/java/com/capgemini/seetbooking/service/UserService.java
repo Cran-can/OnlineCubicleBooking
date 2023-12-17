@@ -1,6 +1,8 @@
 package com.capgemini.seetbooking.service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,13 +10,18 @@ import org.springframework.stereotype.Service;
 import com.capgemini.seetbooking.dto.LoginDto;
 import com.capgemini.seetbooking.exception.LoginException;
 import com.capgemini.seetbooking.exception.UserNotFoundException;
+import com.capgemini.seetbooking.model.Booking;
 import com.capgemini.seetbooking.model.User;
+import com.capgemini.seetbooking.repository.BookingRepository;
 import com.capgemini.seetbooking.repository.UserRepository;
 
 @Service
 public class UserService {
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private BookingRepository bookingRepository;
 
 	public User registerAdmin(String email, String password) {
 		User admin = User.createAdmin(email, password);
@@ -27,7 +34,7 @@ public class UserService {
 	}
 
 	public User registerUser(User user) {
-		// Perform validation and save user
+// Perform validation and save user
 		return userRepository.save(user);
 	}
 
@@ -48,17 +55,25 @@ public class UserService {
 		if (existingUser.isPresent()) {
 			User userToUpdate = existingUser.get();
 
-			// Update profile details
+// Update profile details
 			userToUpdate.setPassword(updatedUser.getPassword());
 			userToUpdate.setFirstName(updatedUser.getFirstName());
 			userToUpdate.setLastName(updatedUser.getLastName());
 
-			// Save and return the updated user
+// Save and return the updated user
 			userRepository.save(userToUpdate);
 			return "User Details Updated";
 		}
 
 		throw new UserNotFoundException("User not found with ID: " + userId);
+	}
+
+	public List<Booking> getUserBookings(long id) {
+		
+		List<Booking> collect = bookingRepository.findAll().stream()
+				.filter(f -> f.getUser().getId().equals(id)).collect(Collectors.toList());
+		System.out.println(collect);
+		return collect;
 	}
 
 }

@@ -11,6 +11,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -21,7 +23,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.capgemini.seetbooking.dto.LoginDto;
 import com.capgemini.seetbooking.exception.LoginException;
 import com.capgemini.seetbooking.exception.UserNotFoundException;
+import com.capgemini.seetbooking.model.Booking;
 import com.capgemini.seetbooking.model.User;
+import com.capgemini.seetbooking.repository.BookingRepository;
 import com.capgemini.seetbooking.repository.UserRepository;
 import com.capgemini.seetbooking.service.UserService;
 
@@ -29,6 +33,9 @@ import com.capgemini.seetbooking.service.UserService;
 public class UserServiceTest {
 	@Mock
 	private UserRepository userRepository;
+	
+	@Mock
+	private BookingRepository bookingRepository;
 
 	@InjectMocks
 	private UserService userService;
@@ -289,4 +296,65 @@ public class UserServiceTest {
 		// Verifying the exception message
 		assertEquals("User not found with ID: " + userId, exception.getMessage());
 	}
+	
+	@Test
+    void testGetUserBookings() {
+        // Mocking data
+        long userId = 1L;
+
+        // Creating user and bookings for the expected result
+        User user = new User();
+        user.setId(userId);
+
+        Booking booking1 = new Booking();
+        booking1.setId(1L);
+        booking1.setUser(user);
+
+        Booking booking2 = new Booking();
+        booking2.setId(2L);
+        booking2.setUser(user);
+
+        List<Booking> allBookings = Arrays.asList(booking1, booking2);
+
+        // Stubbing bookingRepository.findAll() to return allBookings
+        when(bookingRepository.findAll()).thenReturn(allBookings);
+
+        // Calling the method to be tested
+        List<Booking> userBookings = userService.getUserBookings(userId);
+
+        // Verifying that bookingRepository.findAll() was called
+        verify(bookingRepository, times(1)).findAll();
+
+        // Verifying the result
+        assertEquals(2, userBookings.size());
+        assertTrue(userBookings.stream().allMatch(booking -> booking.getUser().getId().equals(userId)));
+    }
+
+    @Test
+    void testGetUserBookingsNoBookings() {
+        // Mocking data
+        long userId = 2L;
+
+        // Creating user and bookings for the expected result
+        User user = new User();
+        user.setId(userId);
+
+        Booking booking1 = new Booking();
+        booking1.setId(1L);
+        booking1.setUser(user);
+
+        List<Booking> allBookings = Arrays.asList(booking1);
+
+        // Stubbing bookingRepository.findAll() to return allBookings
+        when(bookingRepository.findAll()).thenReturn(allBookings);
+
+        // Calling the method to be tested
+        List<Booking> userBookings = userService.getUserBookings(userId);
+
+        // Verifying that bookingRepository.findAll() was called
+        verify(bookingRepository, times(1)).findAll();
+
+        // Verifying the result
+        assertFalse(userBookings.isEmpty());
+    }
 }

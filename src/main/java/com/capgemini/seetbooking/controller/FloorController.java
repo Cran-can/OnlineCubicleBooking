@@ -21,6 +21,7 @@ public class FloorController {
 
  @PostMapping("/create")
  public ResponseEntity<String> create(@RequestBody Floor floor) {
+	 
      return new ResponseEntity<>(floorService.create(floor), HttpStatus.OK);
  }
 

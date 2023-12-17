@@ -1,10 +1,13 @@
 package com.capgemini.seetbooking.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -13,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.capgemini.seetbooking.dto.LoginDto;
+import com.capgemini.seetbooking.dto.UserBookingDto;
 import com.capgemini.seetbooking.exception.LoginException;
 import com.capgemini.seetbooking.exception.ValidationException;
+import com.capgemini.seetbooking.model.Booking;
 import com.capgemini.seetbooking.model.User;
 import com.capgemini.seetbooking.service.UserService;
 
@@ -42,17 +47,17 @@ public class UserController {
 	}
 
 	private void validateUser(User adminUser) {
-		// Check if email and password are provided
+// Check if email and password are provided
 		if (adminUser.getEmail() == null || adminUser.getPassword() == null) {
 			throw new ValidationException("Email and password are required");
 		}
 
-		// Validate email format
+// Validate email format
 		if (!isValidEmail(adminUser.getEmail())) {
 			throw new ValidationException("Invalid email format");
 		}
 
-		// Check if the email is already registered
+// Check if the email is already registered
 		Optional<User> existingUser = userService.getUserByEmail(adminUser.getEmail());
 		if (existingUser.isPresent()) {
 			throw new ValidationException("Email already registered");
@@ -78,10 +83,32 @@ public class UserController {
 		}
 	}
 
-	// Update Profile : firstName,lastName
+// Update Profile : firstName,lastName
 	@PutMapping("/profile/{userId}")
 	public ResponseEntity<String> updateProfile(@PathVariable Long userId, @RequestBody User updatedUser) {
 
 		return new ResponseEntity<>(userService.updateProfile(userId, updatedUser), HttpStatus.OK);
+	}
+
+	@GetMapping("/bookings/{id}")
+	public ResponseEntity<List<UserBookingDto>> getUserBookings(@PathVariable Long id) {
+		List<Booking> userBookings = userService.getUserBookings(id);
+		List<UserBookingDto> userBookingDto = new ArrayList<>();
+		UserBookingDto userBooking =null;
+		if (userBookings.size() > 0) {
+			for(Booking booking: userBookings) {
+				userBooking = new UserBookingDto();
+				userBooking.setBookingId(booking.getId());
+				userBooking.setBookingStatus(booking.getStatus());
+				userBooking.setEndTime(booking.getEndTime());
+				userBooking.setStartTime(booking.getStartTime());
+				userBooking.setUserId(booking.getId());
+				userBookingDto.add(userBooking);
+				
+			}
+			return new ResponseEntity<>(userBookingDto, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
 	}
 }
