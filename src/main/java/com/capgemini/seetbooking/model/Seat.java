@@ -26,7 +26,6 @@ public class Seat {
  @ManyToOne
  @JoinColumn(name = "room_id", nullable = false)
  private Room room;
- {}
  @Column(name="seat_number",nullable = false)
  private String seatNumber;
  

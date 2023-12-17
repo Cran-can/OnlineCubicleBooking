@@ -10,7 +10,11 @@ import org.springframework.stereotype.Service;
 
 import com.capgemini.seetbooking.dto.BookingDto;
 import com.capgemini.seetbooking.dto.OfficeDto;
+import com.capgemini.seetbooking.exception.BookingNotFoundException;
+import com.capgemini.seetbooking.exception.IllegalArgumentException;
 import com.capgemini.seetbooking.exception.OfficeNotFoundException;
+import com.capgemini.seetbooking.exception.SeatNotFoundException;
+import com.capgemini.seetbooking.exception.UserNotFoundException;
 import com.capgemini.seetbooking.model.Booking;
 import com.capgemini.seetbooking.model.BookingStatus;
 import com.capgemini.seetbooking.model.Office;
@@ -97,11 +101,11 @@ public class OfficeService {
 		Optional<Booking> existingBooking = bookingRepository.findByUserIdAndStatus(userId, BookingStatus.APPROVED);
 		// Validate user, seat, and booking
 		if (user.isEmpty()) {
-			throw new RuntimeException("User not found");
+			throw new UserNotFoundException("User not found");
 		}
 
 		if (seat.isEmpty()) {
-			throw new RuntimeException("Seat Not Available");
+			throw new SeatNotFoundException("Seat Not Available");
 		}
 
 		if (existingBooking.isPresent()) {
@@ -135,7 +139,7 @@ public class OfficeService {
 			bookingRepository.save(booking);
 			return "User Booking Approved";
 		} else {
-			throw new RuntimeException("Booking not found");
+			throw new BookingNotFoundException("Booking not found");
 		}
 	}
 	
@@ -148,7 +152,7 @@ public class OfficeService {
 			bookingRepository.save(booking);
 			return "User Booking Rejected";
 		} else {
-			throw new RuntimeException("Booking not found");
+			throw new BookingNotFoundException("Booking not found");
 		}
 	}
 

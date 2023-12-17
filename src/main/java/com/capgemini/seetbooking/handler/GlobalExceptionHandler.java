@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.capgemini.seetbooking.exception.BookingNotFoundException;
 import com.capgemini.seetbooking.exception.DuplicateFloorNumberException;
 import com.capgemini.seetbooking.exception.DuplicateRoomNumberException;
 import com.capgemini.seetbooking.exception.DuplicateSeatNumberException;
@@ -55,7 +56,7 @@ public class GlobalExceptionHandler {
 	}
 	
 	@ExceptionHandler(FloorNotFound.class)
-	public ResponseEntity<Object> handleFloorNotFoundException(OfficeNotFoundException ex) {
+	public ResponseEntity<Object> handleFloorNotFoundException(FloorNotFound ex) {
 		error.setStatus(HttpStatus.BAD_REQUEST);
 		error.setTimestamp(LocalDateTime.now());
 		error.setMessage(ex.getMessage());
@@ -87,6 +88,22 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(SeatNotFoundException.class)
 	public ResponseEntity<Object> handleSeatNotFoundException(SeatNotFoundException ex) {
+		error.setStatus(HttpStatus.BAD_REQUEST);
+		error.setTimestamp(LocalDateTime.now());
+		error.setMessage(ex.getMessage());
+		return new ResponseEntity<>(error, HttpStatus.valueOf(400));
+	}
+	
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex) {
+		error.setStatus(HttpStatus.ALREADY_REPORTED);
+		error.setTimestamp(LocalDateTime.now());
+		error.setMessage(ex.getMessage());
+		return new ResponseEntity<>(error, HttpStatus.valueOf(409));
+	}
+	
+	@ExceptionHandler(BookingNotFoundException.class)
+	public ResponseEntity<Object> handleBookingNotFoundException(BookingNotFoundException ex) {
 		error.setStatus(HttpStatus.BAD_REQUEST);
 		error.setTimestamp(LocalDateTime.now());
 		error.setMessage(ex.getMessage());
