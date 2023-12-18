@@ -44,6 +44,11 @@ public class Floor {
 		this.floorNumber = floorNumber;
 	}
 
+	public Floor(String floorNumber) {
+		super();
+		this.floorNumber = floorNumber;
+	}
+
 	public Long getId() {
 		return id;
 	}

@@ -39,19 +39,19 @@ public class FloorService {
 		return null;
 	}
 
-	private boolean isFloorNumberExists(String floorNumber) {
+	public boolean isFloorNumberExists(String floorNumber) {
 // Check if a floor with the given floorNumber already exists
 		return floorRepository.existsByFloorNumber(floorNumber);
 	}
 
-	private Floor createFloor(Floor floor) {
+	public Floor createFloor(Floor floor) {
 // Implement logic to create a new floor
 
 		return floorRepository.save(floor);
 
 	}
 
-	private Floor updateFloor(Floor floor) {
+	public Floor updateFloor(Floor floor) {
 // Implement logic to update an existing floor
 // Fetch the existing floor from the database
 		Optional<Floor> existingFloorOptional = floorRepository.findById(floor.getId());
@@ -78,7 +78,7 @@ public class FloorService {
 	}
 
 	@SuppressWarnings("unused")
-	private boolean validateFloor(Floor floor) {
+	public boolean validateFloor(Floor floor) {
 // Implement any additional validation logic for the floor
 // For example, check that required fields are not null or empty
 		if (floor.getFloorNumber() == null || floor.getFloorNumber().trim().isEmpty()) {

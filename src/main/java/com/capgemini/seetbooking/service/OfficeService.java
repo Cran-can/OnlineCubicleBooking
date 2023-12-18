@@ -157,7 +157,7 @@ public class OfficeService {
 	}
 
 	public String updateBooking() {
-//		Optional<Booking> optionalBooking = bookingRepository.findById(bookingId);
+
 		List<Booking> bookings = bookingRepository.findAll();
 		List<Booking> bookingToRemove = new ArrayList<>();
 		for (Booking book : bookings) {

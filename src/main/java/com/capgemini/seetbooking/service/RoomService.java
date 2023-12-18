@@ -14,11 +14,6 @@ public class RoomService {
 	@Autowired
 	private RoomRepository roomRepository;
 
-	/*
-	 * public String createOrUpdateRoom(Room room) { // Implement logic to create or
-	 * update a room roomRepository.save(room); return "Room Created"; }
-	 */
-
 	public String createOrUpdateRoom(Room room) {
 		// Implement logic to create or update a room
 		validateRoom(room);
@@ -29,7 +24,7 @@ public class RoomService {
 		return "Room Created";
 	}
 
-	private void validateRoom(Room room) {
+	public void validateRoom(Room room) {
 		// Check if the room number is unique within the floor
 		if (isRoomNumberExistsOnFloor(room)) {
 			throw new DuplicateRoomNumberException("Room number already exists on the floor");
@@ -44,7 +39,7 @@ public class RoomService {
 		// Add other validation checks as needed
 	}
 
-	private boolean isRoomNumberExistsOnFloor(Room room) {
+	public boolean isRoomNumberExistsOnFloor(Room room) {
 		// Check if a room with the given room number already exists on the floor
 		return roomRepository.existsByFloorAndRoomNumber(room.getFloor(), room.getRoomNumber());
 	}
