@@ -16,14 +16,13 @@ import com.capgemini.seetbooking.service.FloorService;
 @RestController
 @RequestMapping("/api/admin/office/floor")
 public class FloorController {
- @Autowired
- private FloorService floorService;
+	@Autowired
+	private FloorService floorService;
 
- @PostMapping("/create")
- public ResponseEntity<String> create(@RequestBody Floor floor) {
-	 
-     return new ResponseEntity<>(floorService.create(floor), HttpStatus.OK);
- }
+	@PostMapping("/create")
+	public ResponseEntity<String> create(@RequestBody Floor floor) {
+
+		return new ResponseEntity<>(floorService.create(floor), HttpStatus.OK);
+	}
 
 }
-

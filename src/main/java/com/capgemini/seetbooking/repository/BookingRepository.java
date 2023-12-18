@@ -13,7 +13,7 @@ import com.capgemini.seetbooking.model.SeatStatus;
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
 	Optional<Booking> findByUserIdAndStatus(Long userId, SeatStatus booked);
-    // Add custom queries if needed
+	// Add custom queries if needed
 
 	Optional<Booking> findByUserIdAndStatus(Long userId, BookingStatus approved);
 

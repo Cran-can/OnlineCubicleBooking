@@ -1,4 +1,4 @@
-	package com.capgemini.seetbooking.model;
+package com.capgemini.seetbooking.model;
 
 import java.util.List;
 
@@ -14,33 +14,33 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "users")
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "user_id")
+	private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String email;
+	@Column(nullable = false, unique = true)
+	private String email;
 
-    @Column(nullable = false)
-    private String password;
-   
-    @Column(name = "first_name")
-    private String firstName;
-    @Column(name = "last_name")
-    private String lastName;
-    
-    @Column
-    private String role;
-    
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Booking> bookings;			
+	@Column(nullable = false)
+	private String password;
 
-    // Other user profile details
+	@Column(name = "first_name")
+	private String firstName;
+	@Column(name = "last_name")
+	private String lastName;
 
-    // Constructors, getters, setters
-    
-    public List<Booking> getBookings() {
+	@Column
+	private String role;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<Booking> bookings;
+
+	// Other user profile details
+
+	// Constructors, getters, setters
+
+	public List<Booking> getBookings() {
 		return bookings;
 	}
 
@@ -72,7 +72,8 @@ public class User {
 		this.lastName = lastName;
 	}
 
-	public User() {}
+	public User() {
+	}
 
 	public User(Long id, String email, String password) {
 		super();
@@ -109,14 +110,14 @@ public class User {
 	public String toString() {
 		return "User [id=" + id + ", email=" + email + ", password=" + password + "]";
 	}
-	
+
 	public static User createAdmin(String email, String password) {
-        User admin = new User();
-        admin.setEmail(email);
-        admin.setPassword(password);
-        admin.setRole("ADMIN");
-        // Set other default admin user details if needed
-        return admin;
-    }
-    
+		User admin = new User();
+		admin.setEmail(email);
+		admin.setPassword(password);
+		admin.setRole("ADMIN");
+		// Set other default admin user details if needed
+		return admin;
+	}
+
 }

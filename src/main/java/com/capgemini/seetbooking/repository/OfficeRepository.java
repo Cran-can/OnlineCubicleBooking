@@ -7,6 +7,5 @@ import com.capgemini.seetbooking.model.Office;
 
 @Repository
 public interface OfficeRepository extends JpaRepository<Office, Long> {
- // Add custom queries if needed
+	// Add custom queries if needed
 }
-

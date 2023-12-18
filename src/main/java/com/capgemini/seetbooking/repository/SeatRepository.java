@@ -13,5 +13,5 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
 
 	boolean existsByRoomAndSeatNumber(Room room, String seatNumber);
 
-    // Add other queries as needed
+	// Add other queries as needed
 }

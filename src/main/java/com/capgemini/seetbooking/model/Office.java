@@ -2,7 +2,6 @@ package com.capgemini.seetbooking.model;
 
 import java.util.List;
 
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,25 +14,25 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "offices")
 public class Office {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "office_id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "office_id")
+	private Long id;
 
-    @Column(nullable = false)
-    private String name;
+	@Column(nullable = false)
+	private String name;
 
-    @Column(nullable = false)
-    private String location;
-    
-    @OneToMany(mappedBy = "office", cascade = CascadeType.ALL)
-    private List<Floor> floors;
+	@Column(nullable = false)
+	private String location;
 
-    // Add other office details like floors, seating capacity, etc.
+	@OneToMany(mappedBy = "office", cascade = CascadeType.ALL)
+	private List<Floor> floors;
 
-    // Constructors, getters, setters
-    
-    public List<Floor> getFloors() {
+	// Add other office details like floors, seating capacity, etc.
+
+	// Constructors, getters, setters
+
+	public List<Floor> getFloors() {
 		return floors;
 	}
 
@@ -41,7 +40,8 @@ public class Office {
 		this.floors = floors;
 	}
 
-	public Office() {}
+	public Office() {
+	}
 
 	public Office(Long id, String name, String location) {
 		super();
@@ -78,5 +78,5 @@ public class Office {
 	public String toString() {
 		return "Office [id=" + id + ", name=" + name + ", location=" + location + "]";
 	}
-    
+
 }

@@ -12,5 +12,5 @@ import com.capgemini.seetbooking.model.Room;
 public interface RoomRepository extends JpaRepository<Room, Long> {
 
 	boolean existsByFloorAndRoomNumber(Floor floor, String roomNumber);
- // Add custom queries if needed
+	// Add custom queries if needed
 }

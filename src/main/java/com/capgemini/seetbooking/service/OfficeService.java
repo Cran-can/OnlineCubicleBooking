@@ -69,10 +69,10 @@ public class OfficeService {
 			officeDto.setId(offices.getId());
 			officeDto.setName(offices.getName());
 			officeDto.setLocation(offices.getLocation());
-		
-		return officeDto;
+
+			return officeDto;
 		}
-		throw new OfficeNotFoundException("Office not available with id:"+officeId);
+		throw new OfficeNotFoundException("Office not available with id:" + officeId);
 	}
 
 	public List<BookingDto> getAllBookings() {
@@ -142,7 +142,7 @@ public class OfficeService {
 			throw new BookingNotFoundException("Booking not found");
 		}
 	}
-	
+
 	public String rejectBooking(Long bookingId) {
 		Optional<Booking> optionalBooking = bookingRepository.findById(bookingId);
 		if (optionalBooking.isPresent()) {

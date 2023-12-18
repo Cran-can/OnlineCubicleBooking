@@ -94,9 +94,9 @@ public class UserController {
 	public ResponseEntity<List<UserBookingDto>> getUserBookings(@PathVariable Long id) {
 		List<Booking> userBookings = userService.getUserBookings(id);
 		List<UserBookingDto> userBookingDto = new ArrayList<>();
-		UserBookingDto userBooking =null;
+		UserBookingDto userBooking = null;
 		if (userBookings.size() > 0) {
-			for(Booking booking: userBookings) {
+			for (Booking booking : userBookings) {
 				userBooking = new UserBookingDto();
 				userBooking.setBookingId(booking.getId());
 				userBooking.setBookingStatus(booking.getStatus());
@@ -104,7 +104,7 @@ public class UserController {
 				userBooking.setStartTime(booking.getStartTime());
 				userBooking.setUserId(booking.getId());
 				userBookingDto.add(userBooking);
-				
+
 			}
 			return new ResponseEntity<>(userBookingDto, HttpStatus.OK);
 		}

@@ -1,12 +1,12 @@
 package com.capgemini.seetbooking.dto;
 
-
 public class OfficeDto {
 	private Long id;
-    private String name;
-    private String location;
-    
-    public OfficeDto() {}
+	private String name;
+	private String location;
+
+	public OfficeDto() {
+	}
 
 	public Long getId() {
 		return id;
@@ -31,7 +31,5 @@ public class OfficeDto {
 	public void setLocation(String location) {
 		this.location = location;
 	}
-    
-    
-    
+
 }

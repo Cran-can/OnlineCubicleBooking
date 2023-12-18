@@ -1,10 +1,11 @@
 package com.capgemini.seetbooking.dto;
 
 public class LoginDto {
-    private String email;
-    private String password;
-    
-    public LoginDto() {}
+	private String email;
+	private String password;
+
+	public LoginDto() {
+	}
 
 	public String getEmail() {
 		return email;
@@ -21,5 +22,5 @@ public class LoginDto {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-    
+
 }

@@ -20,22 +20,21 @@ import com.capgemini.seetbooking.service.SeatService;
 @RestController
 @RequestMapping("/api/admin/office/seat")
 public class SeatController {
- @Autowired
- private SeatService seatService;
- 
- 
+	@Autowired
+	private SeatService seatService;
 
- @PostMapping("/create")
- public ResponseEntity<String> createOrUpdateSeat(@RequestBody Seat seat) {
-     return new ResponseEntity<>(seatService.createOrUpdateSeat(seat), HttpStatus.OK);
- }
+	@PostMapping("/create")
+	public ResponseEntity<String> createOrUpdateSeat(@RequestBody Seat seat) {
+		return new ResponseEntity<>(seatService.createOrUpdateSeat(seat), HttpStatus.OK);
+	}
 
- @GetMapping("/getAll")
+	@GetMapping("/getAll")
 	public ResponseEntity<List<SeatDto>> getAllSeats() {
 		List<SeatDto> seats = seatService.getAllSeats();
 		return new ResponseEntity<>(seats, HttpStatus.OK);
 	}
- @GetMapping("/getOpen")
+
+	@GetMapping("/getOpen")
 	public ResponseEntity<List<SeatDto>> getOpenSeats() {
 		List<SeatDto> seats = seatService.getOpenSeats();
 		return new ResponseEntity<>(seats, HttpStatus.OK);

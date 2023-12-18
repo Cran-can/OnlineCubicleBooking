@@ -54,7 +54,7 @@ public class GlobalExceptionHandler {
 		error.setMessage(ex.getMessage());
 		return new ResponseEntity<>(error, HttpStatus.valueOf(400));
 	}
-	
+
 	@ExceptionHandler(FloorNotFound.class)
 	public ResponseEntity<Object> handleFloorNotFoundException(FloorNotFound ex) {
 		error.setStatus(HttpStatus.BAD_REQUEST);
@@ -62,6 +62,7 @@ public class GlobalExceptionHandler {
 		error.setMessage(ex.getMessage());
 		return new ResponseEntity<>(error, HttpStatus.valueOf(400));
 	}
+
 	@ExceptionHandler(DuplicateFloorNumberException.class)
 	public ResponseEntity<Object> handleDuplicateFloorNotFoundException(DuplicateFloorNumberException ex) {
 		error.setStatus(HttpStatus.ALREADY_REPORTED);
@@ -69,7 +70,7 @@ public class GlobalExceptionHandler {
 		error.setMessage(ex.getMessage());
 		return new ResponseEntity<>(error, HttpStatus.valueOf(409));
 	}
-	
+
 	@ExceptionHandler(DuplicateRoomNumberException.class)
 	public ResponseEntity<Object> handleDuplicateRoomNumberException(DuplicateRoomNumberException ex) {
 		error.setStatus(HttpStatus.ALREADY_REPORTED);
@@ -77,7 +78,7 @@ public class GlobalExceptionHandler {
 		error.setMessage(ex.getMessage());
 		return new ResponseEntity<>(error, HttpStatus.valueOf(409));
 	}
-	
+
 	@ExceptionHandler(DuplicateSeatNumberException.class)
 	public ResponseEntity<Object> handleDuplicateSeatNumberException(DuplicateSeatNumberException ex) {
 		error.setStatus(HttpStatus.ALREADY_REPORTED);
@@ -85,7 +86,7 @@ public class GlobalExceptionHandler {
 		error.setMessage(ex.getMessage());
 		return new ResponseEntity<>(error, HttpStatus.valueOf(409));
 	}
-	
+
 	@ExceptionHandler(SeatNotFoundException.class)
 	public ResponseEntity<Object> handleSeatNotFoundException(SeatNotFoundException ex) {
 		error.setStatus(HttpStatus.BAD_REQUEST);
@@ -93,7 +94,7 @@ public class GlobalExceptionHandler {
 		error.setMessage(ex.getMessage());
 		return new ResponseEntity<>(error, HttpStatus.valueOf(400));
 	}
-	
+
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex) {
 		error.setStatus(HttpStatus.ALREADY_REPORTED);
@@ -101,7 +102,7 @@ public class GlobalExceptionHandler {
 		error.setMessage(ex.getMessage());
 		return new ResponseEntity<>(error, HttpStatus.valueOf(409));
 	}
-	
+
 	@ExceptionHandler(BookingNotFoundException.class)
 	public ResponseEntity<Object> handleBookingNotFoundException(BookingNotFoundException ex) {
 		error.setStatus(HttpStatus.BAD_REQUEST);

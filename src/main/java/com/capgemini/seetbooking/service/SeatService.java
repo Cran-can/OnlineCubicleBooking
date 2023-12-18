@@ -34,12 +34,12 @@ public class SeatService {
 		}
 	}
 
-	private boolean isSeatNumberExists(Seat seat) {
+	public boolean isSeatNumberExists(Seat seat) {
 		// Check if a seat with the given seat number already exists in the room
 		return seatRepository.existsByRoomAndSeatNumber(seat.getRoom(), seat.getSeatNumber());
 	}
 
-	private Seat createSeat(Seat seat) {
+	public Seat createSeat(Seat seat) {
 		// Implement logic to create a new seat
 		validateSeat(seat); // Perform any validation checks
 
@@ -48,7 +48,7 @@ public class SeatService {
 		return seatRepository.save(seat);
 	}
 
-	private Seat updateSeat(Seat seat) {
+	public Seat updateSeat(Seat seat) {
 		// Implement logic to update an existing seat
 		// Fetch the existing seat from the database
 		Optional<Seat> existingSeatOptional = seatRepository.findById(seat.getId());
@@ -73,7 +73,7 @@ public class SeatService {
 		}
 	}
 
-	private void validateSeat(Seat seat) {
+	public void validateSeat(Seat seat) {
 		// Implement validation logic for the seat
 		// For example, check that required fields are not null or empty
 		if (seat.getSeatNumber() == null || seat.getSeatNumber().trim().isEmpty()) {
@@ -86,8 +86,7 @@ public class SeatService {
 		List<SeatDto> seatDtoList = new ArrayList<>();
 		List<Seat> seats = seatRepository.findAll();
 		for (Seat seat : seats) {
-			
-			
+
 			SeatDto seatDto = new SeatDto();
 			seatDto.setId(seat.getId());
 			seatDto.setSeatStatus(seat.getStatus());
@@ -97,21 +96,21 @@ public class SeatService {
 		}
 		return seatDtoList;
 	}
-	
+
 	public List<SeatDto> getOpenSeats() {
 		List<SeatDto> seatDtoList = new ArrayList<>();
 		List<Seat> openSeats = seatRepository.findAll();
-		for(Seat seat : openSeats) {
-			if(seat.getStatus()== SeatStatus.OPEN) {
+		for (Seat seat : openSeats) {
+			if (seat.getStatus() == SeatStatus.OPEN) {
 				SeatDto openseat = new SeatDto();
 				openseat.setId(seat.getId());
 				openseat.setSeatNumber(seat.getSeatNumber());
 				openseat.setSeatStatus(seat.getStatus());
 				openseat.setRoomId(seat.getRoom().getId());
 				seatDtoList.add(openseat);
-				
+
 			}
-			
+
 		}
 
 		return seatDtoList;

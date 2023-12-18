@@ -11,8 +11,9 @@ public class SeatDto {
 	private SeatStatus seatStatus;
 	private String seatNumber;
 	private long roomId;
-	
-	public SeatDto() {}
+
+	public SeatDto() {
+	}
 
 	public Long getId() {
 		return id;
@@ -46,6 +47,4 @@ public class SeatDto {
 		this.roomId = roomId;
 	}
 
-
-	
 }

@@ -77,6 +77,7 @@ public class FloorService {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private boolean validateFloor(Floor floor) {
 // Implement any additional validation logic for the floor
 // For example, check that required fields are not null or empty

@@ -12,8 +12,9 @@ public class UserBookingDto {
 	private LocalDateTime endTime;
 	private Long seatId;
 	private Long userId;
-	
-	public UserBookingDto() {}
+
+	public UserBookingDto() {
+	}
 
 	public long getBookingId() {
 		return bookingId;
@@ -62,5 +63,5 @@ public class UserBookingDto {
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
-	
+
 }

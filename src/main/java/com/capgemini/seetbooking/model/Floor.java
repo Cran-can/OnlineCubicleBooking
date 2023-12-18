@@ -16,61 +16,61 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "floors")
 public class Floor {
- @Id
- @GeneratedValue(strategy = GenerationType.IDENTITY)
- @Column(name = "floor_id")
- private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "floor_id")
+	private Long id;
 
- @ManyToOne
- @JoinColumn(name = "office_id", nullable = false)
- private Office office;
- 
- @OneToMany(mappedBy = "floor", cascade = CascadeType.ALL)
- private List<Room> rooms;
+	@ManyToOne
+	@JoinColumn(name = "office_id", nullable = false)
+	private Office office;
 
- @Column(nullable = false)
- private String floorNumber;
+	@OneToMany(mappedBy = "floor", cascade = CascadeType.ALL)
+	private List<Room> rooms;
 
- // Add other floor details as needed
+	@Column(nullable = false)
+	private String floorNumber;
 
- // Constructors, getters, setters
- public Floor() {}
+	// Add other floor details as needed
 
-public Floor(Long id, Office office, String floorNumber) {
-	super();
-	this.id = id;
-	this.office = office;
-	this.floorNumber = floorNumber;
+	// Constructors, getters, setters
+	public Floor() {
+	}
+
+	public Floor(Long id, Office office, String floorNumber) {
+		super();
+		this.id = id;
+		this.office = office;
+		this.floorNumber = floorNumber;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Office getOffice() {
+		return office;
+	}
+
+	public void setOffice(Office office) {
+		this.office = office;
+	}
+
+	public String getFloorNumber() {
+		return floorNumber;
+	}
+
+	public void setFloorNumber(String floorNumber) {
+		this.floorNumber = floorNumber;
+	}
+
+	@Override
+	public String toString() {
+		return "Floor [id=" + id + ", office=" + office + ", floorNumber=" + floorNumber + "]";
+	}
+
 }
-
-public Long getId() {
-	return id;
-}
-
-public void setId(Long id) {
-	this.id = id;
-}
-
-public Office getOffice() {
-	return office;
-}
-
-public void setOffice(Office office) {
-	this.office = office;
-}
-
-public String getFloorNumber() {
-	return floorNumber;
-}
-
-public void setFloorNumber(String floorNumber) {
-	this.floorNumber = floorNumber;
-}
-
-@Override
-public String toString() {
-	return "Floor [id=" + id + ", office=" + office + ", floorNumber=" + floorNumber + "]";
-}
- 
-}
-

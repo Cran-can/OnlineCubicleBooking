@@ -16,12 +16,11 @@ import com.capgemini.seetbooking.service.RoomService;
 @RestController
 @RequestMapping("/api/admin/office/room")
 public class RoomController {
- @Autowired
- private RoomService roomService;
+	@Autowired
+	private RoomService roomService;
 
- @PostMapping("/create")
- public ResponseEntity<String> createOrUpdateRoom(@RequestBody Room room) {
-     return new ResponseEntity<>(roomService.createOrUpdateRoom(room), HttpStatus.OK);
- }
+	@PostMapping("/create")
+	public ResponseEntity<String> createOrUpdateRoom(@RequestBody Room room) {
+		return new ResponseEntity<>(roomService.createOrUpdateRoom(room), HttpStatus.OK);
+	}
 }
-

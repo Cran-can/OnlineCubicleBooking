@@ -69,9 +69,9 @@ public class UserService {
 	}
 
 	public List<Booking> getUserBookings(long id) {
-		
-		List<Booking> collect = bookingRepository.findAll().stream()
-				.filter(f -> f.getUser().getId().equals(id)).collect(Collectors.toList());
+
+		List<Booking> collect = bookingRepository.findAll().stream().filter(f -> f.getUser().getId().equals(id))
+				.collect(Collectors.toList());
 		System.out.println(collect);
 		return collect;
 	}
