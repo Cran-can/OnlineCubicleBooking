@@ -1,0 +1,109 @@
+--> User Registration:
+POST: http://localhost:8008/api/user/registerAdmin
+{
+    "email":"Admin@gmail.com",
+    "password":"root"
+}
+
+POST: http://localhost:8008/api/user/register
+{
+    "email":"User1@gmail.com",
+    "password":"root"
+}
+
+--> User Login:
+POST:  http://localhost:8008/api/user/login
+{
+    "email":"Admin@gmail.com",
+    "password":"root"
+}
+
+--> User Profile:
+PUT :  http://localhost:8008/api/user/profile/{userId}
+{
+    "password":"root",
+    "firstName":"AAREDDY",
+    "lastName":"GNANESHWAR"
+}
+
+--> Get all bookings:
+GET:  http://localhost:8008/api/user/bookings/{Userid}
+
+--> Create or update Office:
+
+POST : http://localhost:8008/api/admin/office/create
+{    
+     "name":"Capgemini",
+     "location":"Benguluru"
+     
+}
+
+--> Retriviing avalilble offices:
+
+GET : http://localhost:8008/api/admin/office/getAll
+GET : http://localhost:8008/api/admin/office/get/{officeId}
+
+
+--> Create or Update Floor:
+POST:  http://localhost:8008/api/admin/office/floor/create
+{
+  "office": {
+    "id": 1
+  },
+  "floorNumber": "1"
+}
+
+--> Create or Update Rooms:
+
+POST : http://localhost:8008/api/admin/office/room/create
+{
+  "floor": {
+    "id": 1
+  },
+  "roomNumber": "101"
+}
+
+--> Create or Update Seats:
+
+POST  : http://localhost:8008/api/admin/office/seat/create
+
+	{
+	  "room": {
+		"id": 1
+	  },
+	  "seatNumber": "A101",
+	  "status":"OPEN"
+	}
+
+--> get all seats:
+GET:  http://localhost:8008/api/admin/office/seat/getAll
+
+--> get open seats:
+GET:  http://localhost:8008/api/admin/office/seat/getOpen
+
+--> Create a booking:
+
+POST :  http://localhost:8008/api/admin/office/bookings/create
+
+{
+    "user" : {
+        "id" : 2
+    },
+    "seat" : {
+        "id" : 1
+    },
+    "startTime" : "2023-09-22T17:09:00",
+    "endTime" : "2023-09-22T18:22:00",
+    "status" : "PENDING"
+}
+
+--> Admin will approve booking
+PUT:  http://localhost:8008/api/admin/office/bookings/approve/{bookingId}
+
+--> Admin will reject booking
+PUT:  http://localhost:8008/api/admin/office/bookings/reject/{bookingId}
+
+--> Admin will Update bookings
+PUT:  http://localhost:8008/api/admin/office/bookings/update
+
+---------------------------------------------------------------------------------------------------------------------------------------
